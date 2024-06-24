@@ -9,6 +9,7 @@
 <body>
 <h1>Welcome ${userSession.username}!</h1>
 
+<!-- Link to the exam page -->
 <a href = "exam">${examMessage}</a>
 <br />
 <!-- Link to view grades page -->
@@ -16,7 +17,7 @@
 <br />
 <br />
 
-<!-- Link to logout (redirects to login and deletes cookies) -->
+<!-- Link to logout  -->
 <a href = "logout">Logout</a>
 </body>
 </html>

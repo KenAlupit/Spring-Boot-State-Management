@@ -7,11 +7,11 @@
     <title>Score</title>
 </head>
 <body>
-<%-- Output the results --%>
+<!-- Output the results -->
 <h1> Your Score is ${score} / ${answerKeySize}</h1>
-<h1> Your Score Percentage is ${scorePercentage}</h1>
+<h1> Your Score Percentage is ${scorePercentage}%</h1>
 
-<!-- Link to retake exam page -->
+<!-- Link to retake exam -->
 <a href="exam">Retake Exam</a>
 
 <br />

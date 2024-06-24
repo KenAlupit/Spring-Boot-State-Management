@@ -15,8 +15,11 @@
         <th>Grade</th>
     </tr>
     <c:forEach items="${userGrades}" var="currentGrade">
+        <%-- Iterate over each entry in userGrades map --%>
         <tr>
+            <%-- Display the key (username) --%>
             <td><c:out value="${currentGrade.key}"/></td>
+            <%-- Display the value (grade) --%>
             <td><c:out value="${currentGrade.value}"/></td>
         </tr>
     </c:forEach>
