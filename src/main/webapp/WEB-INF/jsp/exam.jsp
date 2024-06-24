@@ -31,7 +31,7 @@
     <br /> <br />
 
     <!-- Link to navigate back to the home page -->
-    <a href="home">Back</a>
+    <a href="/">Back</a>
 
 </form>
 

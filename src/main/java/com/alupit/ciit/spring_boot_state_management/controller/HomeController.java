@@ -1,13 +1,15 @@
 package com.alupit.ciit.spring_boot_state_management.controller;
 
+import com.alupit.ciit.spring_boot_state_management.model.UserGrades;
 import com.alupit.ciit.spring_boot_state_management.model.UserSession;
-import com.alupit.ciit.spring_boot_state_management.service.UserService;
+import com.alupit.ciit.spring_boot_state_management.service.PasswordService;
+import com.alupit.ciit.spring_boot_state_management.service.CacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class HomeController {
@@ -16,16 +18,25 @@ public class HomeController {
     private UserSession userSession;
 
     @Autowired
-    private UserService userService;
+    private PasswordService passwordService;
+
+    @Autowired
+    private CacheService cacheService;
+
+    @Autowired
+    private UserGrades userGrades;
 
     @GetMapping("/")
-    public String home(Model model, HttpServletResponse response) {
+    public String home(HttpSession session, HttpServletResponse response) {
         if(userSession.getUsername()==null) return "redirect:/login";
-        // Set headers to prevent caching
-        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
-        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
-        response.setHeader("Expires", "0"); // Proxies.
-        model.addAttribute("userSession", userSession);
+        cacheService.setNoCacheHeaders(response);
+        if (userGrades.getUserGrades().get(userSession.getUsername()).equals(0)){
+            session.setAttribute("examMessage", "Take a Quiz");
+        }else{
+            session.setAttribute("examMessage", "Retake a Quiz");
+        }
+        session.setAttribute("userSession", userSession);
+        session.setAttribute("userGrades", userGrades.getUserGrades());
         return "home";
     }
 
@@ -34,9 +45,17 @@ public class HomeController {
         return "login";
     }
 
+    @GetMapping("/grade")
+    public String showGrades(HttpServletResponse response) {
+        if(userSession.getUsername()==null) return "redirect:/login";
+        cacheService.setNoCacheHeaders(response);
+        return "grade";
+    }
+
+
     @PostMapping("/login")
     public String login(String username, String password) {
-        if (userService.validateUser(username,password)) {
+        if (passwordService.validateUser(username,password)) {
             userSession.setUsername(username);
             return "redirect:/";
         } else {

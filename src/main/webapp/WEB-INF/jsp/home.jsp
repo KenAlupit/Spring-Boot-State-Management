@@ -9,7 +9,7 @@
 <body>
 <h1>Welcome ${userSession.username}!</h1>
 
-<a href = "exam">test</a>
+<a href = "exam">${examMessage}</a>
 <br />
 <!-- Link to view grades page -->
 <a href = "grade">View Grades</a>
