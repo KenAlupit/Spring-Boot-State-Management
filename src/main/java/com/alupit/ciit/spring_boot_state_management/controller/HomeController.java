@@ -19,8 +19,12 @@ public class HomeController {
     private UserService userService;
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String home(Model model, HttpServletResponse response) {
         if(userSession.getUsername()==null) return "redirect:/login";
+        // Set headers to prevent caching
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        response.setHeader("Expires", "0"); // Proxies.
         model.addAttribute("userSession", userSession);
         return "home";
     }
@@ -44,14 +48,5 @@ public class HomeController {
     public String logout() {
         userSession.setUsername(null);
         return "redirect:/login";
-    }
-
-    @GetMapping("/home")
-    public String noCache(HttpServletResponse response) {
-        // Set headers to prevent caching
-        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
-        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
-        response.setHeader("Expires", "0"); // Proxies.
-        return "home";
     }
 }
